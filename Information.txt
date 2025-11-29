@@ -1,0 +1,428 @@
+index.html
+
+
+<html>
+<head>
+  <title>Student Result Portal</title>
+  <meta charset="utf-8">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    *{box-sizing:border-box;margin:0;padding:0;font-family:'Roboto',sans-serif;}
+    body{background:linear-gradient(135deg,#cce0ff,#ffffff);min-height:100vh;padding:32px;display:flex;justify-content:center;}
+    .container{width:100%;max-width:1100px;}
+    .top{display:flex;gap:20px;align-items:flex-start;justify-content:space-between;margin-bottom:18px;}
+    .brand{flex:1;}
+    .school{width:360px;text-align:right;padding:14px;border-radius:10px;background:linear-gradient(90deg,rgba(51,153,255,0.06),rgba(0,115,230,0.03));color:#0b4f86;}
+    .card{background:#fff;border-radius:14px;padding:18px;box-shadow:0 10px 30px rgba(2,24,71,0.06);margin-bottom:16px;}
+    .center-box{width:420px;margin:0 auto;}
+    h1,h2,h3{color:#074a8a;margin-bottom:8px}
+    .small{font-size:13px;color:#556677}
+    .row{display:flex;gap:12px;flex-wrap:wrap}
+    label{font-size:13px;color:#556677;margin-bottom:6px;display:block}
+    input,select,textarea{width:100%;padding:10px;border:1px solid #d0e8ff;border-radius:8px;outline:none;font-size:14px}
+    input:focus,select:focus,textarea:focus{box-shadow:0 6px 18px rgba(3,102,214,0.09);border-color:#4aa0ff}
+    .btn{display:inline-block;padding:10px 14px;border-radius:10px;border:none;background:linear-gradient(90deg,#2f8fff,#0066cc);color:#fff;font-weight:600;cursor:pointer}
+    .btn-ghost{background:none;border:1px solid #2f8fff;color:#2f8fff;padding:8px 12px;border-radius:10px;cursor:pointer}
+    .link-btn{background:none;border:none;color:#0a66d6;text-decoration:underline;cursor:pointer;padding:6px 0}
+    .muted{color:#7b8a9a;font-size:13px}
+    table{width:100%;border-collapse:collapse;margin-top:12px;background:#fff}
+    th,td{border:1px solid #d7eaff;padding:10px;text-align:center;font-size:14px}
+    th{background:#2f8fff;color:#fff}
+    .summary{margin-top:12px;text-align:left}
+    .flex-between{display:flex;justify-content:space-between;align-items:center}
+    .hidden{display:none}
+    #menuButtons{display:flex;gap:12px;justify-content:center;padding:8px 0 40px 0;position:relative}
+    #logoutBtn{position:absolute;left:12px;bottom:0;background:#ff4d4d;padding:8px 12px;border-radius:10px;color:#fff;border:none;cursor:pointer}
+    @media (max-width:980px){.top{flex-direction:column;align-items:stretch}.school{text-align:left;width:100%}.center-box{width:100%}}
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="top">
+      <div class="brand card">
+        <div class="center-box">
+          <h1>Student Result Portal</h1>
+          <div class="small muted">Login to manage and view student results for the academic session.</div>
+        </div>
+      </div>
+      <div class="school card" id="schoolInfoBox">
+        <div style="font-weight:700;font-size:18px">Pakistan International School Al Khobar</div>
+
+
+    <div id="authArea" class="card">
+      <div id="loginBox" class="center-box">
+        <h2>Login</h2>
+        <input id="loginUser" type="text" placeholder="Username">
+        <input id="loginPass" type="password" placeholder="Password" style="margin-top:8px">
+        <div style="margin-top:12px">
+          <button class="btn full" onclick="login()">Login</button>
+        </div>
+        <div style="margin-top:10px;text-align:center">
+          <button class="link-btn" onclick="showRegister()">Register new user</button>
+        </div>
+      </div>
+
+      <div id="registerBox" class="center-box hidden" style="margin-top:12px">
+        <h2>Register</h2>
+        <input id="regUser" type="text" placeholder="Choose username">
+        <input id="regPass" type="password" placeholder="Choose password" style="margin-top:8px">
+        <div style="margin-top:12px"><button class="btn full" onclick="register()">Create account</button></div>
+        <div style="margin-top:8px;text-align:center"><button class="link-btn" onclick="cancelRegister()">Back to login</button></div>
+      </div>
+    </div>
+
+    <div id="menu" class="card hidden">
+      <h2>Main Menu</h2>
+      <div id="menuButtons">
+        <button class="btn" onclick="showCalc()">Calculate Grade</button>
+        <button class="btn" onclick="showCheck()">Check Grade</button>
+        <button id="logoutBtn" onclick="logout()">Logout</button>
+      </div>
+    </div>
+
+    <div id="calc" class="card hidden">
+      <div style="margin-bottom:8px"><strong>School:</strong> Pakistan International School Al Khobar</div>
+      <h3>Student Result Card</h3>
+
+      <div class="row" style="margin-top:8px">
+        <div style="flex:1">
+          <label>Admission No</label>
+          <input id="admission" type="text" placeholder="Admission number" oninput="lookupByAdmission()">
+        </div>
+        <div style="flex:1">
+          <label>Roll No</label>
+          <input id="sroll" type="text" placeholder="Roll number" oninput="lookupByRoll()">
+        </div>
+        <div style="flex:1">
+          <label>Class / Section</label>
+          <input id="sclass" type="text" placeholder="Class / Section">
+        </div>
+      </div>
+
+      <div class="row" style="margin-top:8px">
+        <div style="flex:1">
+          <label>Student Name</label>
+          <input id="sname" type="text" placeholder="Student full name">
+        </div>
+        <div style="flex:1">
+          <label>Father's Name</label>
+          <input id="fatherName" type="text" placeholder="Father's full name">
+        </div>
+        <div style="flex:1">
+          <label>Session</label>
+          <input id="session" type="text" value="2025-2026">
+        </div>
+      </div>
+
+      <h3 style="margin-top:12px">Enter Marks</h3>
+
+      <div class="row">
+        <div style="flex:1">
+          <label>Chemistry (Max: <span id="chemMax">75</span>)</label>
+          <input id="chem" type="text" placeholder="Chemistry marks">
+        </div>
+        <div style="flex:1">
+          <label>Computer / Biology (Max: <span id="compMax">75</span>)</label>
+          <input id="compbio" type="text" placeholder="Computer/Biology marks">
+        </div>
+        <div style="flex:1">
+          <label>Physics (Max: <span id="physMax">75</span>)</label>
+          <input id="phys" type="text" placeholder="Physics marks">
+        </div>
+      </div>
+
+      <div class="row" style="margin-top:8px">
+        <div style="flex:1">
+          <label>Mathematics (Max: <span id="mathMax">75</span>)</label>
+          <input id="math" type="text" placeholder="Mathematics marks">
+        </div>
+        <div style="flex:1">
+          <label>English (Max: <span id="engMax">75</span>)</label>
+          <input id="eng" type="text" placeholder="English marks">
+        </div>
+        <div style="flex:1">
+          <label>Urdu (Max: <span id="urduMax">75</span>)</label>
+          <input id="urdu" type="text" placeholder="Urdu marks">
+        </div>
+      </div>
+
+      <div class="row" style="margin-top:8px">
+        <div style="flex:1">
+          <label>Islamiyat (Max: <span id="islMax">100</span>)</label>
+          <input id="isl" type="text" placeholder="Islamiyat marks">
+        </div>
+        <div style="flex:1">
+          <label>Tarjuma-tul-Quran (Max: <span id="tarMax">50</span>)</label>
+          <input id="tar" type="text" placeholder="Tarjuma marks">
+        </div>
+        <div style="flex:1">
+          <label>Pakistan Studies (Max: <span id="pakMax">50</span>)</label>
+          <input id="pak" type="text" placeholder="Pakistan Studies marks">
+        </div>
+      </div>
+
+      <div class="flex-between" style="margin-top:12px">
+        <div style="flex:1;margin-right:8px"><button class="btn full-width" onclick="generateAndSave()">Generate & Save</button></div>
+        <div style="flex:1;margin-left:8px"><button class="btn-ghost full-width" onclick="backFromCalc()">Back to Menu</button></div>
+      </div>
+
+      <div id="resultArea" class="hidden">
+        <div class="summary" id="summaryArea">
+          <div id="nameOut">Name: -</div>
+          <div id="classOut">Class: -</div>
+          <div id="rollOut">Roll No: -</div>
+          <div id="admOut">Admission No: -</div>
+          <div id="fatherOut">Father: -</div>
+          <div id="totalOut">Total Marks: 0 / 650</div>
+          <div id="percOut">Percentage: 0%</div>
+          <div id="gradeOut">Grade: -</div>
+          <div id="remOut">Remarks: -</div>
+        </div>
+
+        <table>
+          <thead><tr><th>Subject</th><th>Obtained</th><th>Total</th><th>%</th><th>Grade</th><th>Remarks</th></tr></thead>
+          <tbody>
+            <tr><td>Chemistry</td><td id="rchem">0</td><td id="mchem">75</td><td id="pchem">0%</td><td id="gchem">-</td><td id="rcem">-</td></tr>
+            <tr><td>Computer/Biology</td><td id="rcomp">0</td><td id="mcomp">75</td><td id="pcomp">0%</td><td id="gcomp">-</td><td id="rcompm">-</td></tr>
+            <tr><td>Physics</td><td id="rphys">0</td><td id="mphys">75</td><td id="pphys">0%</td><td id="gphys">-</td><td id="rphysm">-</td></tr>
+            <tr><td>Mathematics</td><td id="rmath">0</td><td id="mmath">75</td><td id="pmath">0%</td><td id="gmath">-</td><td id="rmathm">-</td></tr>
+            <tr><td>English</td><td id="reng">0</td><td id="meng">75</td><td id="peng">0%</td><td id="geng">-</td><td id="rengm">-</td></tr>
+            <tr><td>Urdu</td><td id="rurdu">0</td><td id="murdu">75</td><td id="purdu">0%</td><td id="gurdu">-</td><td id="rurdum">-</td></tr>
+            <tr><td>Islamiyat</td><td id="risl">0</td><td id="misl">100</td><td id="pisl">0%</td><td id="gisl">-</td><td id="rislm">-</td></tr>
+            <tr><td>Tarjuma-tul-Quran</td><td id="rtar">0</td><td id="mtar">50</td><td id="ptar">0%</td><td id="gtar">-</td><td id="rtarm">-</td></tr>
+            <tr><td>Pakistan Studies</td><td id="rpak">0</td><td id="mpak">50</td><td id="ppak">0%</td><td id="gpak">-</td><td id="rpakm">-</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div id="check" class="card hidden">
+      <h3>Check Result (Admin)</h3>
+      <div class="row">
+        <div style="flex:1">
+          <label>Admission No</label>
+          <input id="checkAdm" type="text" placeholder="Enter admission no">
+        </div>
+        <div style="flex:1">
+          <label>Father's Name</label>
+          <input id="checkFather" type="text" placeholder="Enter father's name">
+        </div>
+      </div>
+      <div style="margin-top:12px" class="flex-between">
+        <div style="flex:1;margin-right:8px"><button class="btn full-width" onclick="check()">Check</button></div>
+        <div style="flex:1;margin-left:8px"><button class="btn-ghost full-width" onclick="backFromCheck()">Back to Menu</button></div>
+      </div>
+      <div id="checkRes" style="margin-top:12px"></div>
+    </div>
+  </div>
+
+  <script>
+    var usersData=[];
+    var studentsData=[];
+    var currentUser=null;
+
+    function loadJsons(){
+      fetch('users.json').then(function(r){if(r.ok)return r.json();return []}).then(function(d){if(Array.isArray(d))usersData=d;}).catch(function(){usersData=JSON.parse(localStorage.getItem('users')||'[]');});
+      fetch('students.json').then(function(r){if(r.ok)return r.json();return []}).then(function(d){if(Array.isArray(d))studentsData=d;}).catch(function(){studentsData=JSON.parse(localStorage.getItem('students')||'[]');});
+      var lsUsers=JSON.parse(localStorage.getItem('users')||'[]');
+      for(var i=0;i<lsUsers.length;i++){var u=lsUsers[i];var exists=false;for(var j=0;j<usersData.length;j++){if(usersData[j].username===u.username)exists=true;}if(!exists)usersData.push(u);}
+      var lsStudents=JSON.parse(localStorage.getItem('students')||'[]');
+      for(var k=0;k<lsStudents.length;k++){var s=lsStudents[k];var ex=false;for(var m=0;m<studentsData.length;m++){if(studentsData[m].admission===s.admission)ex=true;}if(!ex)studentsData.push(s);}
+    }
+    loadJsons();
+
+    function login(){
+      var username=document.getElementById('loginUser').value||'';
+      var password=document.getElementById('loginPass').value||'';
+      var found=false;
+      for(var i=0;i<usersData.length;i++){var u=usersData[i]; if(u.username===username&&u.password===password){found=true; currentUser=u; break;}}
+      if(!found){
+        var lsUsers=JSON.parse(localStorage.getItem('users')||'[]');
+        for(var j=0;j<lsUsers.length;j++){var lu=lsUsers[j]; if(lu.username===username&&lu.password===password){found=true; currentUser=lu; break;}}
+      }
+      if(username==='admin'&&password==='admin123'){found=true; currentUser={username:'admin',role:'admin'};}
+      if(found){document.getElementById('loginBox').className='center-box hidden';document.getElementById('registerBox').className='center-box hidden';document.getElementById('menu').className='card';document.getElementById('loginUser').value='';document.getElementById('loginPass').value='';}
+      else{alert('Invalid credentials or user not registered');}
+    }
+
+    function showRegister(){document.getElementById('loginBox').className='center-box hidden';document.getElementById('registerBox').className='center-box';}
+    function cancelRegister(){document.getElementById('registerBox').className='center-box hidden';document.getElementById('loginBox').className='center-box';}
+    function register(){var newUser=document.getElementById('regUser').value||'';var newPass=document.getElementById('regPass').value||''; if(newUser===''||newPass===''){alert('Fill all fields');return;} for(var i=0;i<usersData.length;i++){if(usersData[i].username===newUser){alert('Username exists');return;}} var ls=JSON.parse(localStorage.getItem('users')||'[]'); ls.push({username:newUser,password:newPass}); localStorage.setItem('users',JSON.stringify(ls)); usersData.push({username:newUser,password:newPass}); alert('Registered (saved locally)'); document.getElementById('regUser').value=''; document.getElementById('regPass').value=''; cancelRegister();}
+
+    function logout(){currentUser=null; document.getElementById('menu').className='card hidden'; document.getElementById('calc').className='card hidden'; document.getElementById('check').className='card hidden'; document.getElementById('loginBox').className='center-box'; document.getElementById('checkRes').innerHTML='';}
+
+    function showCalc(){document.getElementById('menu').className='card hidden'; document.getElementById('check').className='card hidden'; document.getElementById('calc').className='card'; document.getElementById('resultArea').className='hidden';}
+    function backFromCalc(){document.getElementById('calc').className='card hidden'; document.getElementById('menu').className='card';}
+    function showCheck(){document.getElementById('menu').className='card hidden'; document.getElementById('calc').className='card hidden'; document.getElementById('check').className='card';}
+    function backFromCheck(){document.getElementById('check').className='card hidden'; document.getElementById('menu').className='card';}
+
+    function numFix(v){var n=Number(v); if(isNaN(n)||n<0) n=0; return n;}
+    function gradeCalc(p){var g='F'; var r='Fail'; if(p>=90){g='A+'; r='Excellent';} else if(p>=80){g='A'; r='Very Good';} else if(p>=70){g='B'; r='Good';} else if(p>=60){g='C'; r='Average';} else if(p>=50){g='D'; r='Pass';} else{g='F'; r='Fail';} return [g,r];}
+
+    function lookupByAdmission(){
+      var adm=document.getElementById('admission').value||'';
+      if(adm==='')return;
+      for(var i=0;i<studentsData.length;i++){var s=studentsData[i]; if(String(s.admission)===String(adm)){fillStudentFields(s); return;}}
+      var lsStudents=JSON.parse(localStorage.getItem('students')||'[]');
+      for(var j=0;j<lsStudents.length;j++){var ss=lsStudents[j]; if(String(ss.admission)===String(adm)){fillStudentFields(ss); return;}}
+    }
+
+    function lookupByRoll(){
+      var roll=document.getElementById('sroll').value||'';
+      if(roll==='')return;
+      for(var i=0;i<studentsData.length;i++){var s=studentsData[i]; if(String(s.roll)===String(roll)){fillStudentFields(s); return;}}
+      var lsStudents=JSON.parse(localStorage.getItem('students')||'[]');
+      for(var j=0;j<lsStudents.length;j++){var ss=lsStudents[j]; if(String(ss.roll)===String(roll)){fillStudentFields(ss); return;}}
+    }
+
+    function fillStudentFields(s){
+      document.getElementById('sname').value=s.name||s.student_name||'';
+      document.getElementById('sclass').value=s.class||s.class_name||'';
+      document.getElementById('sroll').value=s.roll||s.roll_no||'';
+      document.getElementById('admission').value=s.admission||s.adm||'';
+      document.getElementById('fatherName').value=s.father||s.father_name||'';
+      document.getElementById('chem').value=(s.chem||s.chemistry||0);
+      document.getElementById('compbio').value=(s.compbio||s.computer||s.compsci||0);
+      document.getElementById('phys').value=(s.physics||s.phys||0);
+      document.getElementById('math').value=(s.math||s.mathematics||0);
+      document.getElementById('eng').value=(s.english||s.eng||0);
+      document.getElementById('urdu').value=(s.urdu||0);
+      document.getElementById('isl').value=(s.islamiyat||s.isl||0);
+      document.getElementById('tar').value=(s.tarjuma||s.tar||0);
+      document.getElementById('pak').value=(s.pak||s.pakstud||s.pakistan_studies||0);
+    }
+
+    function generateAndSave(){
+      var admission=document.getElementById('admission').value||'';
+      var father=document.getElementById('fatherName').value||'';
+      var sname=document.getElementById('sname').value||'-';
+      var sclass=document.getElementById('sclass').value||'-';
+      var sroll=document.getElementById('sroll').value||'-';
+      if(admission===''||father===''){alert('Admission and father name are required to save'); return;}
+      var chem=numFix(document.getElementById('chem').value); if(chem>75)chem=75;
+      var comp=numFix(document.getElementById('compbio').value); if(comp>75)comp=75;
+      var phys=numFix(document.getElementById('phys').value); if(phys>75)phys=75;
+      var math=numFix(document.getElementById('math').value); if(math>75)math=75;
+      var eng=numFix(document.getElementById('eng').value); if(eng>75)eng=75;
+      var urdu=numFix(document.getElementById('urdu').value); if(urdu>75)urdu=75;
+      var isl=numFix(document.getElementById('isl').value); if(isl>100)isl=100;
+      var tar=numFix(document.getElementById('tar').value); if(tar>50)tar=50;
+      var pak=numFix(document.getElementById('pak').value); if(pak>50)pak=50;
+      var total=chem+comp+phys+math+eng+urdu+isl+tar+pak;
+      var max=75*6+100+50+50;
+      var per=(total/max)*100;
+      var pgchem=(chem/75)*100; var pgcomp=(comp/75)*100; var pgphys=(phys/75)*100; var pgmath=(math/75)*100; var pgend=(eng/75)*100; var pgurdu=(urdu/75)*100; var pgisl=(isl/100)*100; var pgtar=(tar/50)*100; var pgpak=(pak/50)*100;
+      var ggchem=gradeCalc(pgchem); var ggcomp=gradeCalc(pgcomp); var ggphys=gradeCalc(pgphys); var ggmath=gradeCalc(pgmath); var ggeng=gradeCalc(pgend); var ggurdu=gradeCalc(pgurdu); var ggisl=gradeCalc(pgisl); var ggtar=gradeCalc(pgtar); var ggpak=gradeCalc(pgpak);
+      var gOver=gradeCalc(per);
+      document.getElementById('nameOut').innerText='Name: '+sname;
+      document.getElementById('classOut').innerText='Class: '+sclass;
+      document.getElementById('rollOut').innerText='Roll No: '+sroll;
+      document.getElementById('admOut').innerText='Admission No: '+admission;
+      document.getElementById('fatherOut').innerText='Father: '+father;
+      document.getElementById('totalOut').innerText='Total Marks: '+total+' / '+max;
+      document.getElementById('percOut').innerText='Percentage: '+per.toFixed(2)+'%';
+      document.getElementById('gradeOut').innerText='Grade: '+gOver[0];
+      document.getElementById('remOut').innerText='Remarks: '+gOver[1];
+      document.getElementById('rchem').innerText=chem; document.getElementById('pchem').innerText=pgchem.toFixed(1)+'%'; document.getElementById('gchem').innerText=ggchem[0]; document.getElementById('rcem').innerText=ggchem[1];
+      document.getElementById('rcomp').innerText=comp; document.getElementById('pcomp').innerText=pgcomp.toFixed(1)+'%'; document.getElementById('gcomp').innerText=ggcomp[0]; document.getElementById('rcompm').innerText=ggcomp[1];
+      document.getElementById('rphys').innerText=phys; document.getElementById('pphys').innerText=pgphys.toFixed(1)+'%'; document.getElementById('gphys').innerText=ggphys[0]; document.getElementById('rphysm').innerText=ggphys[1];
+      document.getElementById('rmath').innerText=math; document.getElementById('pmath').innerText=pgmath.toFixed(1)+'%'; document.getElementById('gmath').innerText=ggmath[0]; document.getElementById('rmathm').innerText=ggmath[1];
+      document.getElementById('reng').innerText=eng; document.getElementById('peng').innerText=pgend.toFixed(1)+'%'; document.getElementById('geng').innerText=ggeng[0]; document.getElementById('rengm').innerText=ggeng[1];
+      document.getElementById('rurdu').innerText=urdu; document.getElementById('purdu').innerText=pgurdu.toFixed(1)+'%'; document.getElementById('gurdu').innerText=ggurdu[0]; document.getElementById('rurdum').innerText=ggurdu[1];
+      document.getElementById('risl').innerText=isl; document.getElementById('pisl').innerText=pgisl.toFixed(1)+'%'; document.getElementById('gisl').innerText=ggisl[0]; document.getElementById('rislm').innerText=ggisl[1];
+      document.getElementById('rtar').innerText=tar; document.getElementById('ptar').innerText=pgtar.toFixed(1)+'%'; document.getElementById('gtar').innerText=ggtar[0]; document.getElementById('rtarm').innerText=ggtar[1];
+      document.getElementById('rpak').innerText=pak; document.getElementById('mpak').innerText=50; document.getElementById('ppak').innerText=pgpak.toFixed(1)+'%'; document.getElementById('gpak').innerText=ggpak[0]; document.getElementById('rpakm').innerText=ggpak[1];
+      document.getElementById('mchem').innerText=75; document.getElementById('mcomp').innerText=75; document.getElementById('mphys').innerText=75; document.getElementById('mmath').innerText=75; document.getElementById('meng').innerText=75; document.getElementById('murdu').innerText=75; document.getElementById('misl').innerText=100; document.getElementById('mtar').innerText=50;
+      document.getElementById('resultArea').className='';
+      saveStudentRecord({admission:admission,father:father,name:sname,class:sclass,roll:sroll,chem:chem,compbio:comp,physics:phys,math:math,english:eng,urdu:urdu,islamiyat:isl,tarjuma:tar,pak:pak,total:total,percent:per.toFixed(2),grade:gOver[0],pass_fail:(gOver[0]==='F'?'Fail':'Pass'),remarks:gOver[1],session:document.getElementById('session').value||'2025-2026'});
+    }
+
+    function saveStudentRecord(obj){
+      var students=JSON.parse(localStorage.getItem('students')||'[]');
+      for(var i=0;i<students.length;i++){if(String(students[i].admission)===String(obj.admission)){students[i]=obj; localStorage.setItem('students',JSON.stringify(students)); alert('Result updated for admission '+obj.admission); return;}}
+      students.push(obj); localStorage.setItem('students',JSON.stringify(students)); alert('Result saved for admission '+obj.admission);
+    }
+
+    function generateFromStudentObj(s){
+      fillStudentFields(s);
+      generateAndSave();
+    }
+
+    function check(){
+      var adm=document.getElementById('checkAdm').value||'';
+      var father=document.getElementById('checkFather').value||'';
+      if(adm===''||father===''){document.getElementById('checkRes').innerHTML='<div class="small">Enter admission and father name</div>';return;}
+      var found=false;
+      for(var i=0;i<studentsData.length;i++){var s=studentsData[i]; if(String(s.admission)===String(adm) && String(s.father||s.father_name).toLowerCase()===String(father).toLowerCase()){found=true; displayCheckResult(s); break;}}
+      if(!found){
+        var ls=JSON.parse(localStorage.getItem('students')||'[]');
+        for(var j=0;j<ls.length;j++){var ss=ls[j]; if(String(ss.admission)===String(adm) && String(ss.father).toLowerCase()===String(father).toLowerCase()){found=true; displayCheckResult(ss); break;}}
+      }
+      if(!found)document.getElementById('checkRes').innerHTML='<div class="small">No student found.</div>';
+    }
+
+    function displayCheckResult(s){
+      var html='';
+      html+='<div style="background:#f0f8ff;padding:14px;border-radius:10px;border:1px solid #d8eeff;">';
+      html+='<h3 style="color:#074a8a;margin-bottom:8px">'+(s.name||'-')+'</h3>';
+      html+='<div class="small">Admission: '+(s.admission||'-')+' · Class: '+(s.class||'-')+' · Roll: '+(s.roll||'-')+'</div>';
+      html+='<div class="small" style="margin-top:8px">Father: '+(s.father||'-')+' · Session: '+(s.session||'2025-2026')+'</div>';
+      html+='<table style="margin-top:10px"><thead><tr><th>Subject</th><th>Marks</th></tr></thead><tbody>';
+      html+='<tr><td>Chemistry</td><td>'+(s.chem||s.chemistry||0)+'</td></tr>';
+      html+='<tr><td>Computer/Biology</td><td>'+(s.compbio||s.computer||s.compsci||0)+'</td></tr>';
+      html+='<tr><td>Physics</td><td>'+(s.physics||s.phys||0)+'</td></tr>';
+      html+='<tr><td>Mathematics</td><td>'+(s.math||s.mathematics||0)+'</td></tr>';
+      html+='<tr><td>English</td><td>'+(s.english||s.eng||0)+'</td></tr>';
+      html+='<tr><td>Urdu</td><td>'+(s.urdu||0)+'</td></tr>';
+      html+='<tr><td>Islamiyat</td><td>'+(s.islamiyat||s.isl||0)+'</td></tr>';
+      html+='<tr><td>Tarjuma-tul-Quran</td><td>'+(s.tarjuma||s.tar||0)+'</td></tr>';
+      html+='<tr><td>Pakistan Studies</td><td>'+(s.pak||s.pakstud||s.pakistan_studies||0)+'</td></tr>';
+      html+='</tbody></table>';
+      html+='<div style="margin-top:10px" class="small">Total: '+(s.total||0)+' · Percentage: '+(s.percent||0)+'% · Grade: '+(s.grade||'-')+' · Status: '+(s.pass_fail||'-')+'</div>';
+      html+='</div>';
+      document.getElementById('checkRes').innerHTML=html;
+    }
+
+  </script>
+</body>
+</html>
+
+
+
+
+students.json
+
+
+
+[
+{"admission":"ADM001","name":"Muhammad Alman Shariq","father":"Majid Hussain","dob":"12-05-2012","gender":"M","class":"9","sec":"A","chemistry":41,"compsci":50,"math":18,"urdu":40,"physics":48,"islamiyat":35,"tarjuma_quran":42,"english":30,"total":600,"obtained":304,"%":51,"remarks":"Average","pass_fail":"Pass","grade":"D","address":"Khobar – Rakah","bus":"Yes","phone":"+966537245810","admission_date":"15-08-2022","nationality":"Pakistani"},
+{"admission":"ADM002","name":"Ayan Iqbal","father":"Khurram Hanif","dob":"27-11-2011","gender":"M","class":"9","sec":"B","chemistry":50,"compsci":60,"math":25,"urdu":45,"physics":55,"islamiyat":70,"tarjuma_quran":48,"english":60,"total":600,"obtained":413,"%":69,"remarks":"Good","pass_fail":"Pass","grade":"C","address":"Dammam – Al Faisaliah","bus":"No","phone":"+966509183624","admission_date":"09-04-2023","nationality":"Pakistani"},
+{"admission":"ADM003","name":"Aziz Ur Rehman","father":"Khurram Hanif","dob":"04-02-2013","gender":"M","class":"9","sec":"C","chemistry":38,"compsci":47,"math":20,"urdu":42,"physics":40,"islamiyat":65,"tarjuma_quran":45,"english":50,"total":600,"obtained":347,"%":58,"remarks":"Average","pass_fail":"Pass","grade":"D","address":"Khobar – Aqrabiyah","bus":"Yes","phone":"+966552904771","admission_date":"21-09-2021","nationality":"Saudi"},
+{"admission":"ADM004","name":"ABDULLAH ALAM","father":"ALAMGIR KHAN","dob":"19-08-2010","gender":"M","class":"9","sec":"A","chemistry":45,"compsci":53,"math":22,"urdu":41,"physics":49,"islamiyat":80,"tarjuma_quran":50,"english":65,"total":600,"obtained":405,"%":68,"remarks":"Good","pass_fail":"Pass","grade":"C","address":"Dammam – Gulf Street","bus":"Yes","phone":"+966560128490","admission_date":"03-05-2022","nationality":"Pakistani"},
+{"admission":"ADM005","name":"MOHAMMAD MUSAIB","father":"NEK MOHAMMAD","dob":"03-03-2012","gender":"M","class":"9","sec":"B","chemistry":40,"compsci":48,"math":18,"urdu":40,"physics":47,"islamiyat":60,"tarjuma_quran":42,"english":55,"total":600,"obtained":350,"%":58,"remarks":"Average","pass_fail":"Pass","grade":"D","address":"Khobar – Corniche Area","bus":"No","phone":"+966583600214","admission_date":"11-12-2023","nationality":"Saudi"},
+{"admission":"ADM006","name":"Muhammad Aariz Qadeer","father":"Qadeer Ahmed","dob":"10-07-2011","gender":"M","class":"9","sec":"C","chemistry":42,"compsci":55,"math":21,"urdu":44,"physics":46,"islamiyat":60,"tarjuma_quran":40,"english":52,"total":600,"obtained":360,"%":60,"remarks":"Good","pass_fail":"Pass","grade":"C","address":"Dammam – Al Shati","bus":"Yes","phone":"+966501234567","admission_date":"05-09-2022","nationality":"Pakistani"},
+{"admission":"ADM007","name":"Khizar Usman","father":"Usman Jamil","dob":"15-01-2012","gender":"M","class":"9","sec":"A","chemistry":39,"compsci":52,"math":19,"urdu":43,"physics":50,"islamiyat":55,"tarjuma_quran":41,"english":49,"total":600,"obtained":348,"%":58,"remarks":"Average","pass_fail":"Pass","grade":"D","address":"Khobar – Al Rashid","bus":"No","phone":"+966509876543","admission_date":"12-06-2021","nationality":"Saudi"},
+{"admission":"ADM008","name":"Wajeeh Ul Hassan","father":"Qismat Ali","dob":"22-03-2013","gender":"M","class":"9","sec":"B","chemistry":44,"compsci":50,"math":22,"urdu":41,"physics":48,"islamiyat":60,"tarjuma_quran":42,"english":51,"total":600,"obtained":358,"%":60,"remarks":"Good","pass_fail":"Pass","grade":"C","address":"Dammam – Al Khobar","bus":"Yes","phone":"+966502345678","admission_date":"20-11-2022","nationality":"Pakistani"},
+{"admission":"ADM009","name":"Ali Ayyaz","father":"Ayyaz Ahmad","dob":"30-08-2011","gender":"M","class":"9","sec":"C","chemistry":46,"compsci":49,"math":20,"urdu":40,"physics":45,"islamiyat":55,"tarjuma_quran":42,"english":50,"total":600,"obtained":347,"%":58,"remarks":"Average","pass_fail":"Pass","grade":"D","address":"Khobar – Corniche Road","bus":"No","phone":"+966503456789","admission_date":"14-01-2023","nationality":"Saudi"},
+{"admission":"ADM010","name":"Zuhair Arshad","father":"Arshad Miraj","dob":"17-05-2012","gender":"M","class":"9","sec":"A","chemistry":41,"compsci":50,"math":18,"urdu":40,"physics":48,"islamiyat":35,"tarjuma_quran":42,"english":30,"total":600,"obtained":304,"%":51,"remarks":"Average","pass_fail":"Pass","grade":"D","address":"Dammam – Al Faisaliah","bus":"Yes","phone":"+966504567890","admission_date":"22-03-2022","nationality":"Pakistani"},
+{"admission":"ADM011","name":"Muhammad Awab Javed","father":"Sarfraz Javed","dob":"09-09-2011","gender":"M","class":"9","sec":"B","chemistry":40,"compsci":48,"math":19,"urdu":41,"physics":46,"islamiyat":60,"tarjuma_quran":42,"english":50,"total":600,"obtained":346,"%":58,"remarks":"Average","pass_fail":"Pass","grade":"D","address":"Khobar – Al Rashid","bus":"No","phone":"+966505678901","admission_date":"01-07-2021","nationality":"Saudi"},
+{"admission":"ADM012","name":"Abdul Waase","father":"Ghulam Ali Asghar","dob":"23-02-2013","gender":"M","class":"9","sec":"C","chemistry":42,"compsci":50,"math":20,"urdu":43,"physics":47,"islamiyat":60,"tarjuma_quran":42,"english":52,"total":600,"obtained":358,"%":60,"remarks":"Good","pass_fail":"Pass","grade":"C","address":"Dammam – Gulf Street","bus":"Yes","phone":"+966506789012","admission_date":"19-09-2022","nationality":"Pakistani"},
+{"admission":"ADM013","name":"Muhammad Saim Aamir","father":"Muhammad Aamir","dob":"11-11-2012","gender":"M","class":"9","sec":"A","chemistry":41,"compsci":50,"math":18,"urdu":40,"physics":48,"islamiyat":35,"tarjuma_quran":42,"english":30,"total":600,"obtained":304,"%":51,"remarks":"Average","pass_fail":"Pass","grade":"D","address":"Khobar – Rakah","bus":"Yes","phone":"+966507890123","admission_date":"23-05-2023","nationality":"Pakistani"},
+{"admission":"ADM014","name":"Huzaifa Imran","father":"Imran Qayyum","dob":"02-04-2011","gender":"M","class":"9","sec":"B","chemistry":45,"compsci":50,"math":22,"urdu":42,"physics":50,"islamiyat":60,"tarjuma_quran":45,"english":55,"total":600,"obtained":369,"%":62,"remarks":"Good","pass_fail":"Pass","grade":"C","address":"Dammam – Al Shati","bus":"No","phone":"+966508901234","admission_date":"17-12-2021","nationality":"Saudi"},
+{"admission":"ADM015","name":"Muhammad Dawood","father":"","dob":"15-06-2012","gender":"M","class":"9","sec":"C","chemistry":40,"compsci":50,"math":18,"urdu":41,"physics":47,"islamiyat":60,"tarjuma_quran":42,"english":50,"total":600,"obtained":348,"%":58,"remarks":"Average","pass_fail":"Pass","grade":"D","address":"Khobar – Corniche Area","bus":"Yes","phone":"+966509012345","admission_date":"09-03-2022","nationality":"Pakistani"},
+{"admission":"ADM016","name":"Muhammad Ahmad","father":"Sarim","dob":"10-10-2011","gender":"M","class":"9","sec":"A","chemistry":41,"compsci":50,"math":18,"urdu":40,"physics":48,"islamiyat":35,"tarjuma_quran":42,"english":30,"total":600,"obtained":304,"%":51,"remarks":"Average","pass_fail":"Pass","grade":"D","address":"Dammam – Gulf Street","bus":"No","phone":"+966501234569","admission_date":"15-07-2022","nationality":"Pakistani"},
+{"admission":"ADM017","name":"Muhammad Tayyab Shahid","father":"Iftikhar Ahmed Khalid","dob":"21-03-2012","gender":"M","class":"9","sec":"B","chemistry":44,"compsci":50,"math":20,"urdu":42,"physics":48,"islamiyat":60,"tarjuma_quran":42,"english":50,"total":600,"obtained":356,"%":59,"remarks":"Average","pass_fail":"Pass","grade":"D","address":"Khobar – Al Rashid","bus":"Yes","phone":"+966502345671","admission_date":"11-11-2022","nationality":"Pakistani"},
+{"admission":"ADM018","name":"Muhammad Safdar","father":"","dob":"30-01-2013","gender":"M","class":"9","sec":"C","chemistry":40,"compsci":50,"math":18,"urdu":41,"physics":47,"islamiyat":60,"tarjuma_quran":42,"english":50,"total":600,"obtained":348,"%":58,"remarks":"Average","pass_fail":"Pass","grade":"D","address":"Dammam – Corniche Area","bus":"No","phone":"+966503456782","admission_date":"05-09-2023","nationality":"Saudi"},
+{"admission":"ADM019","name":"Muhammad Bilal Shad","father":"","dob":"05-07-2011","gender":"M","class":"9","sec":"A","chemistry":41,"compsci":50,"math":18,"urdu":40,"physics":48,"islamiyat":35,"tarjuma_quran":42,"english":30,"total":600,"obtained":304,"%":51,"remarks":"Average","pass_fail":"Pass","grade":"D","address":"Khobar – Rakah","bus":"Yes","phone":"+966504567893","admission_date":"01-04-2022","nationality":"Pakistani"},
+{"admission":"ADM020","name":"Muhammad Ali Rizwan","father":"","dob":"12-09-2012","gender":"M","class":"9","sec":"B","chemistry":45,"compsci":50,"math":22,"urdu":42,"physics":50,"islamiyat":60,"tarjuma_quran":45,"english":55,"total":600,"obtained":369,"%":62,"remarks":"Good","pass_fail":"Pass","grade":"C","address":"Dammam – Al Shati","bus":"No","phone":"+966505678904","admission_date":"22-08-2022","nationality":"Saudi"},
+{"admission":"ADM021","name":"Raahim Ali Rizwan","father":"","dob":"18-02-2011","gender":"M","class":"9","sec":"C","chemistry":40,"compsci":50,"math":18,"urdu":41,"physics":47,"islamiyat":60,"tarjuma_quran":42,"english":50,"total":600,"obtained":348,"%":58,"remarks":"Average","pass_fail":"Pass","grade":"D","address":"Khobar – Corniche Road","bus":"Yes","phone":"+966506789015","admission_date":"03-06-2021","nationality":"Pakistani"},
+{"admission":"ADM022","name":"Hunain Fahim","father":"Fahim Uddin Abbasi","dob":"25-04-2013","gender":"M","class":"9","sec":"A","chemistry":41,"compsci":50,"math":18,"urdu":40,"physics":48,"islamiyat":35,"tarjuma_quran":42,"english":30,"total":600,"obtained":304,"%":51,"remarks":"Average","pass_fail":"Pass","grade":"D","address":"Dammam – Gulf Street","bus":"No","phone":"+966507890126","admission_date":"15-11-2022","nationality":"Pakistani"},
+{"admission":"ADM023","name":"Mohammad Ali Asghar","father":"Syed Farasat Abbas","dob":"07-01-2012","gender":"M","class":"9","sec":"B","chemistry":44,"compsci":50,"math":20,"urdu":42,"physics":48,"islamiyat":60,"tarjuma_quran":42,"english":50,"total":600,"obtained":356,"%":59,"remarks":"Average","pass_fail":"Pass","grade":"D","address":"Khobar – Al Rashid","bus":"Yes","phone":"+966508901237","admission_date":"29-03-2023","nationality":"Saudi"},
+{"admission":"ADM024","name":"Mateen Ur Rehman Janjua","father":"Aamir Rehman Janjua","dob":"19-08-2011","gender":"M","class":"9","sec":"C","chemistry":40,"compsci":50,"math":18,"urdu":41,"physics":47,"islamiyat":60,"tarjuma_quran":42,"english":50,"total":600,"obtained":348,"%":58,"remarks":"Average","pass_fail":"Pass","grade":"D","address":"Dammam – Al Shati","bus":"No","phone":"+966509012348","admission_date":"07-07-2022","nationality":"Pakistani"},
+{"admission":"ADM025","name":"Muhammad Hamza","father":"Muhammad Shahid","dob":"28-06-2012","gender":"M","class":"9","sec":"A","chemistry":41,"compsci":50,"math":18,"urdu":40,"physics":48,"islamiyat":35,"tarjuma_quran":42,"english":30,"total":600,"obtained":304,"%":51,"remarks":"Average","pass_fail":"Pass","grade":"D","address":"Khobar – Rakah","bus":"Yes","phone":"+966501234567","admission_date":"25-12-2022","nationality":"Saudi"},
+{"admission":"ADM026","name":"Muhammad Taha Aamir","father":"Aamir Jabbar","dob":"11-10-2011","gender":"M","class":"9","sec":"B","chemistry":45,"compsci":50,"math":22,"urdu":42,"physics":50,"islamiyat":60,"tarjuma_quran":45,"english":55,"total":600,"obtained":369,"%":62,"remarks":"Good","pass_fail":"Pass","grade":"C","address":"Dammam – Al Faisaliah","bus":"No","phone":"+966502345678","admission_date":"18-09-2021","nationality":"Pakistani"},
+{"admission":"ADM027","name":"Zakariya Khalid","father":"","dob":"22-02-2013","gender":"M","class":"9","sec":"C","chemistry":40,"compsci":50,"math":18,"urdu":41,"physics":47,"islamiyat":60,"tarjuma_quran":42,"english":50,"total":600,"obtained":348,"%":58,"remarks":"Average","pass_fail":"Pass","grade":"D","address":"Khobar – Corniche Road","bus":"Yes","phone":"+966503456789","admission_date":"12-11-2022","nationality":"Saudi"},
+{"admission":"ADM028","name":"Muhammad Hani Haider","father":"Khalid Mahmood","dob":"03-07-2012","gender":"M","class":"9","sec":"A","chemistry":41,"compsci":50,"math":18,"urdu":40,"physics":48,"islamiyat":35,"tarjuma_quran":42,"english":30,"total":600,"obtained":304,"%":51,"remarks":"Average","pass_fail":"Pass","grade":"D","address":"Dammam – Gulf Street","bus":"No","phone":"+966504567890","admission_date":"30-05-2023","nationality":"Pakistani"},
+{"admission":"ADM029","name":"Muhammed Irshad Hussain","father":"","dob":"17-12-2011","gender":"M","class":"9","sec":"B","chemistry":45,"compsci":50,"math":22,"urdu":42,"physics":50,"islamiyat":60,"tarjuma_quran":45,"english":55,"total":600,"obtained":369,"%":62,"remarks":"Good","pass_fail":"Pass","grade":"C","address":"Khobar – Al Rashid","bus":"Yes","phone":"+966505678901","admission_date":"20-01-2022","nationality":"Saudi"},
+{"admission":"ADM030","name":"Bilal Bin Altaf Minhas","father":"Altaf Rafiq","dob":"29-04-2012","gender":"M","class":"9","sec":"C","chemistry":40,"compsci":50,"math":18,"urdu":41,"physics":47,"islamiyat":60,"tarjuma_quran":42,"english":50,"total":600,"obtained":348,"%":58,"remarks":"Average","pass_fail":"Pass","grade":"D","address":"Dammam – Al Shati","bus":"No","phone":"+966506789012","admission_date":"11-10-2022","nationality":"Pakistani"}
+]
